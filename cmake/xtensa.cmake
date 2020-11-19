@@ -18,7 +18,7 @@ else()
   set(XCC_OPTS "")
 endif()
 
-set(XCC_FLAGS "${XCC_OPTS} -mlongcalls -mno-l32r-flix -mno-coproc -ffunction-sections -Wall -Wextra -Werror")
+set(XCC_FLAGS "${XCC_OPTS} -mlongcalls -mno-l32r-flix -mno-coproc -Wall -Wextra -Werror")
 
 set(CMAKE_C_FLAGS   "${XCC_FLAGS} -Os -g" CACHE INTERNAL "c compiler flags")
 set(CMAKE_CXX_FLAGS "${XCC_FLAGS} -Os -g -fno-rtti -fno-exceptions" CACHE INTERNAL "cxx compiler flags")

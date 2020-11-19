@@ -195,13 +195,18 @@ _xt_overflow:
                                         // If Overflow then return (branch to EPC)
 
 _xt_entry:
+        s32e     a8,  a1, -4            // [a1-68] <-  a8 (ExcVAddr)
+        s32e    a11,  a1, -8            // [a1-72] <- a11 (ExcCause)
 #if XCHAL_HAVE_LOOPS
         s32e    a12,  a1, -20           // [a1-84] <- a12 (LBEG)
         s32e    a13,  a1, -24           // [a1-88] <- a13 (LEND)
         s32e    a14,  a1, -28           // [a1-92] <- a14 (LCOUNT)
 #endif
-        s32e     a8,  a1, -4            // [a1-68] <-  a8 (ExcVAddr)
-        s32e    a11,  a1, -8            // [a1-72] <- a11 (ExcCause)
+#if XCHAL_HAVE_EXCLUSIVE
+        movi    a12,  0
+        getex   a12
+        s32e    a12,  a1, -32           // [a1-96] <- a12 (ATOMCTL)
+#endif
 
         j       1f                      // make room for literals
 
@@ -299,6 +304,10 @@ _xt_restore:
         // Some loads must happen before DISPST = Restore, as these
         // will not be accessible via L32E once DISPST = Restore.
 
+#if XCHAL_HAVE_EXCLUSIVE
+        l32e    a12,  a1, -32           // a12 <- [a1-96] (ATOMCTL)
+        getex   a12
+#endif
         l32e    a10,  a1, -12           // a10 <- [a1-76] (PS/SAR)
         l32e    a12,  a1, -20           // a12 <- [a1-84] (LBEG)
         l32e    a13,  a1, -24           // a13 <- [a1-88] (LEND)

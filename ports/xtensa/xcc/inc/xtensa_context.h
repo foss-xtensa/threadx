@@ -150,7 +150,7 @@ XSTRUCT_END(XtExcFrame)
 #if XCHAL_HAVE_XEA3
 
 XSTRUCT_BEGIN
-XSTRUCT_FIELD (long, 4, XT_STK_EXIT,     exit)
+XSTRUCT_FIELD (long, 4, XT_STK_ATOMCTL,  atomctl)
 XSTRUCT_FIELD (long, 4, XT_STK_LCOUNT,   lcount)
 XSTRUCT_FIELD (long, 4, XT_STK_LEND,     lend)
 XSTRUCT_FIELD (long, 4, XT_STK_LBEG,     lbeg)

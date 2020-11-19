@@ -130,6 +130,13 @@ _xt_context_save:
     s32i    a3,  sp, XT_STK_LCOUNT
     #endif
 
+    #if XCHAL_HAVE_EXCLUSIVE
+    /* Save and clear state of ATOMCTL */
+    movi    a3,  0
+    getex   a3
+    s32i    a3,  sp, XT_STK_ATOMCTL
+    #endif
+
     #if XT_USE_SWPRI
     /* Save virtual priority mask */
     movi    a3,  _xt_vpri_mask
@@ -255,6 +262,12 @@ _xt_context_restore:
     l32i    a2,  sp, XT_STK_LCOUNT
     wsr     a3,  LEND
     wsr     a2,  LCOUNT
+    #endif
+
+    #if XCHAL_HAVE_EXCLUSIVE
+    /* Restore state of ATOMCTL */
+    l32i    a2,  sp, XT_STK_ATOMCTL
+    getex   a2
     #endif
 
     #ifdef XT_USE_OVLY

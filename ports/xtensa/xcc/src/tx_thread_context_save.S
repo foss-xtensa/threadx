@@ -45,6 +45,9 @@
 #include "xtensa_rtos.h"
 #include "tx_api_asm.h"
 
+
+#if XCHAL_HAVE_XEA2
+
     .text
 
 /**************************************************************************/ 
@@ -149,4 +152,6 @@ _tx_thread_context_save:
     ret
 
 //  }
+
+#endif /* XCHAL_HAVE_XEA2 */
 

@@ -118,11 +118,13 @@ _tx_thread_stack_build:
     /* Start thread via user exception exit dispatcher (could use any). */
 #if XCHAL_HAVE_XEA2
     movi    a5, _xt_user_exit
-#else
-    movi    a5, 0                       /* Unused */
-#endif
-    s32i    a3, a4, XT_STK_PC
     s32i    a5, a4, XT_STK_EXIT
+#else
+    movi    a5, 0
+    s32i    a5, a4, XT_STK_ATOMCTL
+#endif
+
+    s32i    a3, a4, XT_STK_PC
 
     /*
     Set thread's initial PS for C code, all int levels enabled.

@@ -60,7 +60,7 @@ xt_exc_handler xt_set_exception_handler(uint32_t n, xt_exc_handler f)
 {
     xt_exc_handler old;
 
-    if ((n < 0) || (n >= XCHAL_EXCCAUSE_NUM)) {
+    if (n >= XCHAL_EXCCAUSE_NUM) {
         return 0;       /* invalid exception number */
     }
 
@@ -121,7 +121,7 @@ xt_handler xt_set_interrupt_handler(uint32_t n, xt_handler f, void * arg)
     xt_handler_table_entry * entry;
     xt_handler               old;
 
-    if ((n < 0) || (n >= XCHAL_NUM_INTERRUPTS)) {
+    if (n >= XCHAL_NUM_INTERRUPTS) {
         return 0;       /* invalid interrupt number */
     }
 
