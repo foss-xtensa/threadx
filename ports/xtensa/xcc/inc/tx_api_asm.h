@@ -34,6 +34,7 @@
 #ifndef TX_API_ASM_H
 #define TX_API_ASM_H
 
+#include "tx_port.h"
 
 /* API input parameters and general constants.  */
 
