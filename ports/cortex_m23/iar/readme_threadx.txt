@@ -9,7 +9,8 @@ Import all ThreadX common and port-specific source files into an IAR project.
 Configure the project to build a library rather than an executable. This 
 results in the ThreadX run-time library file tx.a, which is needed by 
 the application.
-
+Files tx_thread_stack_error_handler.c and tx_thread_stack_error_notify.c 
+replace the common files of the same name. 
 
 2.  Demonstration System
 
@@ -134,6 +135,13 @@ The project options "General Options -> Library Configuration" should also have 
 For generic code revision information, please refer to the readme_threadx_generic.txt
 file, which is included in your distribution. The following details the revision
 information associated with this specific port of ThreadX:
+
+04-02-2021  Release 6.1.6 changes:
+            tx_port.h                           Updated macro definition
+            tx_thread_schedule.s                Added low power support
+
+03-02-2021  The following files were changed/added for version 6.1.5:
+            tx_port.h                       Added ULONG64_DEFINED
 
 09-30-2020  Initial ThreadX 6.1 version for Cortex-M23 using IAR's ARM tools.
 

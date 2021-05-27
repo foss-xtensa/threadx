@@ -52,7 +52,7 @@ int32_t xt_timer_intnum = -1;
 /*                                                                        */
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
-/*  11-09-2020     Cadence Design Systems   Initial version 6.1.2.        */
+/*  12-31-2020     Cadence Design Systems   Initial Version 6.1.3         */
 /*                                                                        */
 /**************************************************************************/
 VOID   _tx_initialize_low_level(VOID)

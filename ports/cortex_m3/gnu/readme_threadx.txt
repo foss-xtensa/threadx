@@ -143,6 +143,12 @@ For generic code revision information, please refer to the readme_threadx_generi
 file, which is included in your distribution. The following details the revision
 information associated with this specific port of ThreadX:
 
+04-02-2021  Release 6.1.6 changes:
+            tx_port.h                           Updated macro definition
+
+03-02-2021  The following files were changed/added for version 6.1.5:
+            tx_thread_schedule.s            Added low power feature
+
 09-30-2020  ThreadX update of Cortex-M3/GNU port. The following files were 
             changed/added for port specific version 6.1:
 

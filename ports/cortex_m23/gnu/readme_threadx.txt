@@ -5,12 +5,13 @@
 
 1.  Building the ThreadX run-time Library
 
-
-
+An example .bat file is in the example_build directory.
+Files tx_thread_stack_error_handler.c and tx_thread_stack_error_notify.c 
+replace the common files of the same name. 
 
 2.  Demonstration System
 
-
+No demonstration example is provided.
 
 
 3.  System Initialization
@@ -126,6 +127,24 @@ located in either your runtime startup file or in the tx_initialize_low_level.S 
 For generic code revision information, please refer to the readme_threadx_generic.txt
 file, which is included in your distribution. The following details the revision
 information associated with this specific port of ThreadX:
+
+04-02-2021  Release 6.1.6 changes:
+            tx_port.h                           Updated macro definition
+            tx_thread_schedule.s                Added low power support
+
+03-02-2021  The following files were changed/added for version 6.1.5:
+            tx_port.h                       Added ULONG64_DEFINED
+
+12-31-2020  The following files were 
+            changed/added for port specific version 6.1.3:
+            
+            tx_port.h                       Remove unneeded include files, 
+                                            use builtin functions,
+                                            modified comments.
+                                            
+            tx_thread_secure_stack.c        Remove unneeded include file, 
+                                            use inline get/set functions,
+                                            modified comments.
 
 09-30-2020  Initial ThreadX 6.1 version for Cortex-M23 using GNU tools.
 
