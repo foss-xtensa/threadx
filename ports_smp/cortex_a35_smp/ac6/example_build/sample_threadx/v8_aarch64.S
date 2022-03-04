@@ -1,10 +1,10 @@
 // ------------------------------------------------------------
 // Armv8-A AArch64 - Common helper functions
 //
-// Copyright (c) 2012-2017 Arm Limited (or its affiliates). All rights reserved.
-// Use, modification and redistribution of this file is subject to your
-// possession of a valid DS-5 end user licence agreement and your compliance
-// with all applicable terms and conditions of such licence agreement.
+// Copyright (c) 2012-2019 Arm Limited (or its affiliates). All rights reserved.
+// Use, modification and redistribution of this file is subject to your possession of a
+// valid End User License Agreement for the Arm Product of which these examples are part of
+// and your compliance with all applicable terms and conditions of such licence agreement.
 // ------------------------------------------------------------
 
 #include "v8_system.h"
@@ -17,6 +17,7 @@
     .global InvalidateUDCaches
     .global GetMIDR
     .global GetMPIDR
+    .global GetAffinity
     .global GetCPUID
 
 // ------------------------------------------------------------
@@ -138,12 +139,27 @@ GetMPIDR:
     .cfi_endproc
 
 
+    .type GetAffinity, "function"
+    .cfi_startproc
+GetAffinity:
+
+    mrs x0, MPIDR_EL1
+    ubfx x1, x0, #32, #8
+    bfi  w0, w1, #24, #8
+    ret
+    .cfi_endproc
+
+
     .type GetCPUID, "function"
     .cfi_startproc
 GetCPUID:
 
     mrs x0, MIDR_EL1
     ubfx    x0, x0, #4, #12 // extract PartNum
+    cmp x0, #0xD0D          // Cortex-A77
+    b.eq DynamIQ
+    cmp x0, #0xD0B          // Cortex-A76
+    b.eq DynamIQ
     cmp x0, #0xD0A          // Cortex-A75
     b.eq DynamIQ
     cmp x0, #0xD05          // Cortex-A55
@@ -156,6 +172,8 @@ DynamIQ:
 
 Others:
     mrs x0, MPIDR_EL1
-    ubfx    x0, x0, #MPIDR_EL1_AFF0_LSB, #MPIDR_EL1_AFF_WIDTH
+    ubfx    x1, x0, #MPIDR_EL1_AFF0_LSB, #MPIDR_EL1_AFF_WIDTH
+    ubfx    x2, x0, #MPIDR_EL1_AFF1_LSB, #MPIDR_EL1_AFF_WIDTH
+    add     x0, x1, x2, LSL #2
     ret
     .cfi_endproc

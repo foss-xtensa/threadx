@@ -12,7 +12,7 @@
 
 /**************************************************************************/
 /**************************************************************************/
-/**                                                                       */
+/**                                                                       */ 
 /** ThreadX Component                                                     */
 /**                                                                       */
 /**   Port Specific                                                       */
@@ -21,35 +21,43 @@
 /**************************************************************************/
 
 
-/**************************************************************************/
-/*                                                                        */
-/*  PORT SPECIFIC C INFORMATION                            RELEASE        */
-/*                                                                        */
+/**************************************************************************/ 
+/*                                                                        */ 
+/*  PORT SPECIFIC C INFORMATION                            RELEASE        */ 
+/*                                                                        */ 
 /*    tx_port.h                                            RXv2/GNURX     */
-/*                                                           6.1.3        */
+/*                                                           6.1.10       */
 /*                                                                        */
-/*  AUTHOR                                                                */
-/*                                                                        */
-/*    William E. Lamie, Express Logic, Inc.                               */
-/*                                                                        */
-/*  DESCRIPTION                                                           */
-/*                                                                        */
-/*    This file contains data type definitions that make the ThreadX      */
-/*    real-time kernel function identically on a variety of different     */
-/*    processor architectures.  For example, the size or number of bits   */
-/*    in an "int" data type vary between microprocessor architectures and */
-/*    even C compilers for the same microprocessor.  ThreadX does not     */
-/*    directly use native C data types.  Instead, ThreadX creates its     */
-/*    own special types that can be mapped to actual data types by this   */
-/*    file to guarantee consistency in the interface and functionality.   */
-/*                                                                        */
-/*  RELEASE HISTORY                                                       */
-/*                                                                        */
-/*    DATE              NAME                      DESCRIPTION             */
-/*                                                                        */
-/*  12-31-2020     William E. Lamie         Initial Version 6.1.3         */
-/*                                                                        */
-/**************************************************************************/
+/*  AUTHOR                                                                */ 
+/*                                                                        */ 
+/*    William E. Lamie, Microsoft Corporation                             */ 
+/*                                                                        */ 
+/*  DESCRIPTION                                                           */ 
+/*                                                                        */ 
+/*    This file contains data type definitions that make the ThreadX      */ 
+/*    real-time kernel function identically on a variety of different     */ 
+/*    processor architectures.  For example, the size or number of bits   */ 
+/*    in an "int" data type vary between microprocessor architectures and */ 
+/*    even C compilers for the same microprocessor.  ThreadX does not     */ 
+/*    directly use native C data types.  Instead, ThreadX creates its     */ 
+/*    own special types that can be mapped to actual data types by this   */ 
+/*    file to guarantee consistency in the interface and functionality.   */ 
+/*                                                                        */ 
+/*  RELEASE HISTORY                                                       */ 
+/*                                                                        */ 
+/*    DATE              NAME                      DESCRIPTION             */ 
+/*                                                                        */ 
+/*  12-30-2020     William E. Lamie         Initial Version 6.1.3         */
+/*  06-02-2021     William E. Lamie         Modified comments,            */
+/*                                            resulting in version 6.1.7  */   
+/*  10-15-2021     William E. Lamie         Modified comment(s),          */
+/*                                            resulting in version 6.1.9  */
+/*  01-31-2022     William E. Lamie         Modified comment(s), and      */
+/*                                            added missing interrupt     */
+/*                                            control defines,            */
+/*                                            resulting in version 6.1.10 */
+/*                                                                        */ 
+/**************************************************************************/ 
 
 #ifndef TX_PORT_H
 #define TX_PORT_H
@@ -79,6 +87,12 @@ typedef long                                    LONG;
 typedef unsigned long                           ULONG;
 typedef short                                   SHORT;
 typedef unsigned short                          USHORT;
+
+
+/* Define interrupt control options.  */
+
+#define TX_INT_DISABLE                          0x00000000
+#define TX_INT_ENABLE                           0x00010000
 
 
 /* Define the priority levels for ThreadX.  Legal values range
@@ -221,8 +235,8 @@ VOID                                            _tx_thread_interrupt_restore(UIN
 
 #else
 
-#define TX_INTERRUPT_SAVE_AREA                  UCHAR interrupt_save;
-#define TX_DISABLE                              {interrupt_save = ((UCHAR)__builtin_rx_mvfc(0u) && 0x8u); __builtin_rx_clrpsw(8u);};
+#define TX_INTERRUPT_SAVE_AREA                  UINT interrupt_save;
+#define TX_DISABLE                              {interrupt_save = ((UINT)__builtin_rx_mvfc(0u) && 0x8u); __builtin_rx_clrpsw(8u);};
 #define TX_RESTORE                              {if(interrupt_save != 0u) {__builtin_rx_setpsw(8u);}};
 
 #define _tx_thread_system_return                _tx_thread_system_return_inline
@@ -255,7 +269,7 @@ static void _tx_thread_system_return_inline(void)
 
 #ifdef TX_THREAD_INIT
 CHAR                            _tx_version_id[] = 
-                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  ThreadX RXv2/GNURX Version 6.1.3 *";
+                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  ThreadX RXv2/GNURX Version 6.1.10 *";
 #else
 extern  CHAR                    _tx_version_id[];
 #endif

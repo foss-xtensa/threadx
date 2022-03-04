@@ -12,7 +12,7 @@
 
 /**************************************************************************/
 /**************************************************************************/
-/**                                                                       */ 
+/**                                                                       */
 /** ThreadX Component                                                     */
 /**                                                                       */
 /**   Port Specific                                                       */
@@ -21,11 +21,11 @@
 /**************************************************************************/
 
 
-/**************************************************************************/ 
-/*                                                                        */ 
-/*  PORT SPECIFIC C INFORMATION                            RELEASE        */ 
-/*                                                                        */ 
-/*    tx_port.h                                       ARCv2_EM/MetaWare   */ 
+/**************************************************************************/
+/*                                                                        */
+/*  PORT SPECIFIC C INFORMATION                            RELEASE        */
+/*                                                                        */
+/*    tx_port.h                                       ARCv2_EM/MetaWare   */
 /*                                                           6.1.6        */
 /*                                                                        */
 /*  AUTHOR                                                                */
@@ -33,24 +33,29 @@
 /*    William E. Lamie, Microsoft Corporation                             */
 /*                                                                        */
 /*  DESCRIPTION                                                           */
-/*                                                                        */ 
-/*    This file contains data type definitions that make the ThreadX      */ 
-/*    real-time kernel function identically on a variety of different     */ 
-/*    processor architectures.  For example, the size or number of bits   */ 
-/*    in an "int" data type vary between microprocessor architectures and */ 
-/*    even C compilers for the same microprocessor.  ThreadX does not     */ 
-/*    directly use native C data types.  Instead, ThreadX creates its     */ 
-/*    own special types that can be mapped to actual data types by this   */ 
-/*    file to guarantee consistency in the interface and functionality.   */ 
-/*                                                                        */ 
-/*  RELEASE HISTORY                                                       */ 
-/*                                                                        */ 
+/*                                                                        */
+/*    This file contains data type definitions that make the ThreadX      */
+/*    real-time kernel function identically on a variety of different     */
+/*    processor architectures.  For example, the size or number of bits   */
+/*    in an "int" data type vary between microprocessor architectures and */
+/*    even C compilers for the same microprocessor.  ThreadX does not     */
+/*    directly use native C data types.  Instead, ThreadX creates its     */
+/*    own special types that can be mapped to actual data types by this   */
+/*    file to guarantee consistency in the interface and functionality.   */
+/*                                                                        */
+/*  RELEASE HISTORY                                                       */
+/*                                                                        */
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  09-30-2020     William E. Lamie         Initial Version 6.1           */
-/*  04-02-2021     Bhupendra Naphade        Modified comment(s),updated   */
+/*  04-02-2021     Bhupendra Naphade        Modified comment(s), updated  */
 /*                                            macro definition,           */
 /*                                            resulting in version 6.1.6  */
+/*  01-31-2022     Andres Mlinar            Modified comments(s),         */
+/*                                            initialize interrupts right */
+/*                                            before enabling the task    */
+/*                                            scheduler,                  */
+/*                                            resulting in version 6.1.10 */
 /*                                                                        */
 /**************************************************************************/
 
@@ -139,10 +144,10 @@ typedef unsigned short                          USHORT;
 #endif
 
 
-/* Define various constants for the ThreadX ARCv2 EM port.  */ 
+/* Define various constants for the ThreadX ARCv2 EM port.  */
 
 #define TX_INT_ENABLE                           0x0000001F  /* Enable all interrupts            */
-#define TX_INT_DISABLE_MASK                     0x00000000  /* Disable all interrupts           */ 
+#define TX_INT_DISABLE_MASK                     0x00000000  /* Disable all interrupts           */
 
 
 /* Define the clock source for trace event entry time stamp. The following two item are port specific.  
@@ -183,6 +188,12 @@ ULONG   _tx_misra_time_stamp_get(VOID);
 #else
 #define TX_INLINE_INITIALIZATION
 #endif
+
+/* Define the ARC-specific initialization code that is expanded in the generic source.  */
+
+void    _tx_initialize_start_interrupts(void);
+
+#define TX_PORT_SPECIFIC_PRE_SCHEDULER_INITIALIZATION                       _tx_initialize_start_interrupts();
 
 
 /* Determine whether or not stack checking is enabled. By default, ThreadX stack checking is 
@@ -311,7 +322,7 @@ ULONG   _tx_misra_time_stamp_get(VOID);
 
 #ifdef TX_THREAD_INIT
 CHAR                            _tx_version_id[] = 
-                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  ThreadX ARCv2_EM/MetaWare Version 6.1.6 *";
+                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  ThreadX ARCv2_EM/MetaWare Version 6.1.10 *";
 #else
 #ifdef TX_MISRA_ENABLE
 extern  CHAR                    _tx_version_id[100];
@@ -322,7 +333,6 @@ extern  CHAR                    _tx_version_id[];
 
 
 #endif
-
 
 
 

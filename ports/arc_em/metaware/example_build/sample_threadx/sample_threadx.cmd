@@ -14,9 +14,8 @@ IVT_SIZE_BYTES = IVT_SIZE_ITEMS * 4;//in bytes
 
 //define ICCM and DCCM locations
 MEMORY {
-	 
-	ICCM:   	ORIGIN = 0x00000000, LENGTH = 128K
-	DCCM:   	ORIGIN = 0x80000000, LENGTH = 128K
+    ICCM:      ORIGIN = 0x00000000, LENGTH = 128K
+    DCCM:      ORIGIN = 0x80000000, LENGTH = 128K
 }
     
 //define sections and groups    
@@ -24,11 +23,11 @@ SECTIONS {
     GROUP: {
         .ivt  (TEXT) :  # Interrupt table
         {
-        	___ivt1 = .;
-        	* (.ivt)
-        	___ivt2 = .;
-        	// Make the IVT at least IVT_SIZE_BYTES  
-        	. += (___ivt2 - ___ivt1 < IVT_SIZE_BYTES) ? (IVT_SIZE_BYTES - (___ivt2 - ___ivt1)) : 0;
+            ___ivt1 = .;
+            * (.ivt)
+            ___ivt2 = .;
+            // Make the IVT at least IVT_SIZE_BYTES  
+            . += (___ivt2 - ___ivt1 < IVT_SIZE_BYTES) ? (IVT_SIZE_BYTES - (___ivt2 - ___ivt1)) : 0;
         }
         .ivh  (TEXT) :  // Interrupt handlers
           

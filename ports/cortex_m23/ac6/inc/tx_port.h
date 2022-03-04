@@ -26,7 +26,7 @@
 /*  PORT SPECIFIC C INFORMATION                            RELEASE        */
 /*                                                                        */
 /*    tx_port.h                                         Cortex-M23/AC6    */
-/*                                                           6.1.5        */
+/*                                                           6.1.9        */
 /*                                                                        */
 /*  AUTHOR                                                                */
 /*                                                                        */
@@ -51,6 +51,14 @@
 /*  03-02-2021      Scott Larson            Modified comment(s), added    */
 /*                                            ULONG64_DEFINED,            */
 /*                                            resulting in version 6.1.5  */
+/*  06-02-2021      Yuxin Zhou              Modified comment(s), removed  */
+/*                                            unneeded header file, added */
+/*                                            conditional compilation     */
+/*                                            for ARMv8-M (Cortex M23/33) */
+/*                                            resulting in version 6.1.7  */
+/*  10-15-2021     Scott Larson             Modified comment(s), improved */
+/*                                            stack check error handling, */
+/*                                            resulting in version 6.1.9  */
 /*                                                                        */
 /**************************************************************************/
 
@@ -71,7 +79,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <arm_compat.h>
-#include "ARMCM23_TZ.h"          /* For intrinsic functions. */
 
 /* Define ThreadX basic types for this port.  */
 
@@ -94,17 +101,9 @@ UINT    _txe_thread_secure_stack_free(struct TX_THREAD_STRUCT *thread_ptr);
 UINT    _tx_thread_secure_stack_allocate(struct TX_THREAD_STRUCT *tx_thread, ULONG stack_size);
 UINT    _tx_thread_secure_stack_free(struct TX_THREAD_STRUCT *tx_thread);
 
-/* This hardware has stack checking that we take advantage of - do NOT define. */
-#ifdef TX_ENABLE_STACK_CHECKING
-    #error "Do not define TX_ENABLE_STACK_CHECKING"
-#endif
+/* This port handles stack errors. */
+#define TX_PORT_THREAD_STACK_ERROR_HANDLING
 
-/* If user does not want to terminate thread on stack overflow, 
-   #define the TX_THREAD_NO_TERMINATE_STACK_ERROR symbol.
-   The thread will be rescheduled and continue to cause the exception.
-   It is suggested user code handle this by registering a notification with the
-   tx_thread_stack_error_notify function. */
-/*#define TX_THREAD_NO_TERMINATE_STACK_ERROR */
 
 /* Define the system API mappings based on the error checking 
    selected by the user.  Note: this section is only applicable to 
@@ -279,7 +278,6 @@ ULONG   _tx_misra_time_stamp_get(VOID);
 
 #ifndef TX_MISRA_ENABLE
 
-//register unsigned int _ipsr __asm ("MRS %[result], ipsr" : [result] "=r" (_ipsr) : );
 inline static unsigned int _get_ipsr(void);
 inline static unsigned int _get_ipsr(void)
 {
@@ -410,7 +408,7 @@ unsigned int          was_masked;
 
 #ifdef TX_THREAD_INIT
 CHAR                            _tx_version_id[] = 
-                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  ThreadX Cortex-M23/AC6 Version 6.1 *";
+                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  ThreadX Cortex-M23/AC6 Version 6.1.9 *";
 #else
 #ifdef TX_MISRA_ENABLE
 extern  CHAR                    _tx_version_id[100];
