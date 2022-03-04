@@ -128,7 +128,7 @@ _tx_timer_interrupt:
     #ifdef XT_CLOCK_FREQ
     movi    a2, XT_TICK_DIVISOR         /* a2 = comparator increment */
     #else
-    movi    a3, _xt_tick_divisor
+    movi    a3, xt_tick_divisor
     l32i    a2, a3, 0                   /* a2 = comparator increment */
     #endif
     rsr     a3, XT_CCOMPARE             /* a3 = old comparator value */
