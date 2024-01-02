@@ -33,6 +33,7 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  12-31-2020     Cadence Design Systems   Initial Version 6.1.3         */
+/*  12-08-2023     Cadence Design Systems   Add LX8 interrupt support     */
 /*                                                                        */
 /**************************************************************************/
 
@@ -51,7 +52,7 @@
 -------------------------------------------------------------------------------
 */
 
-#if XCHAL_HAVE_XEA2
+#if XCHAL_HAVE_XEA2 && (XCHAL_NUM_INTERRUPTS <= 32)
 
     .data
     .global _xt_intdata
